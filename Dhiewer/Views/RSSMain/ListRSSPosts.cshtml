@@ -1,0 +1,20 @@
+﻿@model IEnumerable<Dhiewer_DataLibrary.Model.RSSPost>
+
+@{
+    ViewBag.Title = "ListRSSPosts";
+}
+
+<h2>ListRSSPosts</h2>
+
+@foreach (var item in Model) {
+    <div id="@Html.DisplayFor(modelItem => item.Id)" class="bordered-gray">
+        <h3>
+            <a target="_blank" href="@Html.DisplayFor(modelItem => item.PostURL)">@Html.DisplayFor(modelItem => item.Subject)</a>
+        </h3>
+        <p style="font-size:81%">from Windows Forms General</p>
+        <p style="font-size:81%">@Html.DisplayFor(modelItem => item.ContentType)</p>
+        <p>@Html.DisplayFor(modelItem => item.Content)</p>
+        <p style="font-size:81%">@Html.DisplayFor(modelItem => item.Published)</p>
+        <p style="font-size:81%">@Html.DisplayFor(modelItem => item.LastUpdated)</p>
+    </div>
+}
