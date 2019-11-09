@@ -3,18 +3,64 @@
 @{
     ViewBag.Title = "ListRSSPosts";
 }
+<script language="JavaScript">
+    function ToggleDisplay(id) {
+        var theId = 'd' + id;
+        var elem = document.getElementById(theId);
+        if (elem) {
+            if (elem.style.display != 'none') {
+                elem.style.display = 'none';
+                elem.style.visibility = 'hidden';
+            }
+            else {
+                elem.style.display = 'block';
+                elem.style.visibility = 'visible';
+            }
+        }
+    }
+</script>
+
+<style>
+    .header {
+        font-size: larger;
+        font-weight: bold;
+        cursor: hand;
+        cursor: pointer;
+        background-color: #cccccc;
+        font-family: Verdana;
+        padding: 20px;
+        border: 1px solid gray;
+        border-radius: 8px;
+    }
+
+    .details {
+        display: block;
+        visibility: visible;
+        background-color: #eeeeee;
+        font-family: Verdana;
+        padding: 20px;
+        border: 1px solid gray;
+        border-radius: 8px;
+    }
+</style>
 
 <h2>ListRSSPosts</h2>
 
-@foreach (var item in Model) {
-    <div id="@Html.DisplayFor(modelItem => item.Id)" class="bordered-gray">
-        <h3>
-            <a target="_blank" href="@Html.DisplayFor(modelItem => item.PostURL)">@Html.DisplayFor(modelItem => item.Subject)</a>
-        </h3>
-        <p style="font-size:81%">from Windows Forms General</p>
-        <p style="font-size:81%">@Html.DisplayFor(modelItem => item.ContentType)</p>
-        <p>@Html.DisplayFor(modelItem => item.Content)</p>
-        <p style="font-size:81%">@Html.DisplayFor(modelItem => item.Published)</p>
-        <p style="font-size:81%">@Html.DisplayFor(modelItem => item.LastUpdated)</p>
-    </div>
+@foreach (var item in Model)
+{
+    <asp:Repeater id="rptFAQs" runat="server">
+        <ItemTemplate>
+            <div id='@String.Format("h{0}",item.Id)' class="header" onclick='ToggleDisplay(@Html.DisplayFor(modelItem => item.Id));@HelperClass.MarkRead(item);'>
+                <h3>@Html.DisplayFor(modelItem => item.Subject)</h3>
+            </div>
+
+            <div id='@String.Format("d{0}",item.Id)' class="details">
+                <p style="font-size:81%">from Windows Forms General</p>
+                <p style="font-size:81%">@Html.DisplayFor(modelItem => item.ContentType)</p>
+                <p>@Html.DisplayFor(modelItem => item.Content)</p>
+                <p style="font-size:81%">@Html.DisplayFor(modelItem => item.Published)</p>
+                <p style="font-size:81%">@Html.DisplayFor(modelItem => item.LastUpdated)</p>
+            </div>
+        </ItemTemplate>
+    </asp:Repeater>
 }
