@@ -15,5 +15,6 @@ namespace Dhiewer_DataLibrary.Repositories
         RSSPost GetById(int id);
         RSSPost GetBySubject(string subject);
         RSSPost GetByFeedRefIdSubject(RSSPost rssPost);
+        void MarkRead(int id);
     }
 }

@@ -24,5 +24,14 @@ namespace Dhiewer.Controllers
 
             return View(rSSPosts);
         }
+        [HttpPost]
+        public ActionResult MarkRead(int Id)
+        {
+            IRSSPostRepository repository = new RSSPostRepository();
+
+            repository.MarkRead(Id);
+            return Content("OK");
+        }
+
     }
 }

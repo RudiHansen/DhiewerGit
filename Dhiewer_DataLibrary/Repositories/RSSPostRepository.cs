@@ -18,7 +18,7 @@ namespace Dhiewer_DataLibrary.Repositories
             using (var db = new SqlConnection(ConfigurationManager.ConnectionStrings["TestDB"].ConnectionString))
             {
                 SqlMapper.AddTypeMap(typeof(DateTime), DbType.DateTime2);
-                string insertQuery = @"INSERT INTO [Dhiewer].[RSSPost]([FeedRefId], [Subject], [ContentType], [Content], [PostURL], [Published], [LastUpdated], [Read])"+
+                string insertQuery = @"INSERT INTO [Dhiewer].[RSSPost]([FeedRefId], [Subject], [ContentType], [Content], [PostURL], [Published], [LastUpdated], [Read])" +
                                      @" VALUES (@FeedRefId, @Subject, @ContentType, @Content, @PostURL, @Published, @LastUpdated, @Read)";
 
                 var result = db.Execute(insertQuery, rssPost);
@@ -32,6 +32,7 @@ namespace Dhiewer_DataLibrary.Repositories
         {
             using (var db = new SqlConnection(ConfigurationManager.ConnectionStrings["TestDB"].ConnectionString))
             {
+                SqlMapper.AddTypeMap(typeof(DateTime), DbType.DateTime2);
                 string updateQuery = @"UPDATE [Dhiewer].[RSSPost] SET [Subject] = @Subject, [ContentType] = @ContentType, [Content] = @Content," +
                                      @"[PostURL] = @PostURL, [Published] = @Published, [LastUpdated] = @LastUpdated, [Read] = @Read  WHERE FeedRefId = @FeedRefId";
 
@@ -56,7 +57,7 @@ namespace Dhiewer_DataLibrary.Repositories
         {
             using (var db = new SqlConnection(ConfigurationManager.ConnectionStrings["TestDB"].ConnectionString))
             {
-                string selectQuery = @"SELECT * FROM [Dhiewer].[RSSPost] WHERE [Read]=0";
+                string selectQuery = @"SELECT TOP 10 * FROM [Dhiewer].[RSSPost] WHERE [Read]=0";
 
                 return db.Query<RSSPost>(selectQuery).ToList();
             }
@@ -83,5 +84,14 @@ namespace Dhiewer_DataLibrary.Repositories
             throw new NotImplementedException();
         }
 
+        public void MarkRead(int Id)
+        {
+            using (var db = new SqlConnection(ConfigurationManager.ConnectionStrings["TestDB"].ConnectionString))
+            {
+                string updateQuery = @"UPDATE [Dhiewer].[RSSPost] SET [Read] = 1 WHERE Id = @Id";
+
+                var result = db.Execute(updateQuery, new { Id });
+            }
+        }
     }
 }
