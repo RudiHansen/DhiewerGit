@@ -41,12 +41,15 @@ namespace Dhiewer_DataLibrary.Repositories
         {
             using (var db = new SqlConnection(ConfigurationManager.ConnectionStrings["TestDB"].ConnectionString))
             {
-                string selectQuery = @"SELECT * FROM [Dhiewer].[RSSFeed]";
-
+                string selectQuery = @"SELECT *, " +
+                                     @"    (SELECT COUNT(*)" +
+                                     @"        FROM [Dhiewer].[RSSPost]" +
+                                     @"        WHERE [Dhiewer].[RSSPost].[FeedRefId] =[Dhiewer].[RSSFeed].[Id]" +
+                                     @"        AND [Dhiewer].[RSSPost].[Read] = 0) UnreadPosts" +
+                                     @"    FROM [Dhiewer].[RSSFeed]";
                 return db.Query<RSSFeed>(selectQuery).ToList();
             }
         }
-
         public void Update(RSSFeed rssFeed)
         {
             throw new NotImplementedException();

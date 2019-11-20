@@ -10,6 +10,7 @@ namespace Dhiewer_DataLibrary.Model
     {
         public int Id { get; set; }
         public int FeedRefId { get; set; }
+        public string FeedName { get; }
         public string Subject { get; set; }
         public string ContentType { get; set; }
         public string Content { get; set; }
@@ -17,6 +18,7 @@ namespace Dhiewer_DataLibrary.Model
         public DateTime Published { get; set; }
         public DateTime LastUpdated { get; set; }
         public bool Read { get; set; }
+
 
         public override string ToString()
         {

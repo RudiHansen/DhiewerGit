@@ -12,6 +12,7 @@ namespace Dhiewer_DataLibrary.Repositories
         bool Exist(RSSPost rssPost);
         List<RSSPost> ReadAll();
         List<RSSPost> ReadUnread();
+        List<RSSPost> ReadUnreadFromFeedId(int FeedRefId);
         RSSPost GetById(int id);
         RSSPost GetBySubject(string subject);
         RSSPost GetByFeedRefIdSubject(RSSPost rssPost);

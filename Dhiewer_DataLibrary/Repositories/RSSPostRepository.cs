@@ -18,7 +18,7 @@ namespace Dhiewer_DataLibrary.Repositories
             using (var db = new SqlConnection(ConfigurationManager.ConnectionStrings["TestDB"].ConnectionString))
             {
                 SqlMapper.AddTypeMap(typeof(DateTime), DbType.DateTime2);
-                string insertQuery = @"INSERT INTO [Dhiewer].[RSSPost]([FeedRefId], [Subject], [ContentType], [Content], [PostURL], [Published], [LastUpdated], [Read])" +
+                string insertQuery = @"INSERT INTO [Dhiewer].[RSSPost]([FeedRefId], [Subject], [ContentType], [Content], [PostURL], [Published], [LastUpdated], [Read])"+
                                      @" VALUES (@FeedRefId, @Subject, @ContentType, @Content, @PostURL, @Published, @LastUpdated, @Read)";
 
                 var result = db.Execute(insertQuery, rssPost);
@@ -57,9 +57,29 @@ namespace Dhiewer_DataLibrary.Repositories
         {
             using (var db = new SqlConnection(ConfigurationManager.ConnectionStrings["TestDB"].ConnectionString))
             {
-                string selectQuery = @"SELECT TOP 10 * FROM [Dhiewer].[RSSPost] WHERE [Read]=0";
+                string selectQuery = @"SELECT TOP 10 [Dhiewer].[RSSPost].[Id], [Dhiewer].[RSSPost].[FeedRefId], [Dhiewer].[RSSFeed].[Name] as FeedName, [Dhiewer].[RSSPost].[Subject], [Dhiewer].[RSSPost].[ContentType], [Dhiewer].[RSSPost].[Content], [Dhiewer].[RSSPost].[PostURL], [Dhiewer].[RSSPost].[Published], [Dhiewer].[RSSPost].[LastUpdated], [Dhiewer].[RSSPost].[Read] " +
+                                     @"    FROM [Dhiewer].[RSSPost] " +
+                                     @"    JOIN [Dhiewer].[RSSFeed] " +
+                                     @"    ON ([Dhiewer].[RSSFeed].[Id] = [Dhiewer].[RSSPost].[FeedRefId]) " +
+                                     @"    WHERE [Read]=0";
+
 
                 return db.Query<RSSPost>(selectQuery).ToList();
+            }
+        }
+        public List<RSSPost> ReadUnreadFromFeedId(int FeedRefId)
+        {
+            using (var db = new SqlConnection(ConfigurationManager.ConnectionStrings["TestDB"].ConnectionString))
+            {
+                string selectQuery = @"SELECT TOP 10 [Dhiewer].[RSSPost].[Id], [Dhiewer].[RSSPost].[FeedRefId], [Dhiewer].[RSSFeed].[Name] as FeedName, [Dhiewer].[RSSPost].[Subject], [Dhiewer].[RSSPost].[ContentType], [Dhiewer].[RSSPost].[Content], [Dhiewer].[RSSPost].[PostURL], [Dhiewer].[RSSPost].[Published], [Dhiewer].[RSSPost].[LastUpdated], [Dhiewer].[RSSPost].[Read] " +
+                                     @"    FROM [Dhiewer].[RSSPost] " +
+                                     @"    JOIN [Dhiewer].[RSSFeed] " +
+                                     @"    ON ([Dhiewer].[RSSFeed].[Id] = [Dhiewer].[RSSPost].[FeedRefId]) " +
+                                     @"    WHERE [FeedRefId] = @FeedRefId" +
+                                     @"    AND [Read] = 0";
+
+
+                return db.Query<RSSPost>(selectQuery, new { FeedRefId }).ToList();
             }
         }
         public List<RSSPost> GetByFeedRefId(int feedRefId) // NOT IMPLEMENTED

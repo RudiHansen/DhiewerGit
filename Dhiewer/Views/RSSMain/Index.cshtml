@@ -1,7 +1,43 @@
-﻿
-@{
-    ViewBag.Title = "RSSMain";
-}
+﻿@model IEnumerable<Dhiewer_DataLibrary.Model.RSSFeed>
 
-<h2>RSSMain</h2>
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var detailsPartial = $('#details');
 
+        $('.details-link').click(function (event) {
+            event.preventDefault();
+            var url = $(this).attr('href');
+
+            $.ajax({
+                url: url,
+                type: 'get',
+                success: function (data) {
+                    detailsPartial.html(data);
+                    $('#clearDetails').click(function () {
+                        detailsPartial.html(null);
+                    });
+                }
+            });
+        });
+    });
+</script>
+
+<h2>RSSFeeds</h2>
+
+<div>
+    <div id="tree" style="margin-top: 10px;">
+        <ul class="dynatree-container">
+            @foreach (var item in Model)
+            {
+            <li class="">
+                @*<img src="https://plus.google.com/_/favicon?domain=docs.microsoft.com" alt="">*@
+                <img src="@Html.DisplayFor(modelItem => item.IconURL) " alt="">
+                @Html.ActionLink(@Html.DisplayFor(modelItem => item.Name) + "(" + @Html.DisplayFor(modelItem => item.UnreadPosts) + ")", "Details", new { id = item.Id }, new { @class = "details-link" })
+            </li>
+            }
+        </ul>
+    </div>
+</div>
+
+<div id="details"></div>

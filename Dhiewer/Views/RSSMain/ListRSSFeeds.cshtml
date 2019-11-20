@@ -1,0 +1,20 @@
+﻿@model IEnumerable<Dhiewer_DataLibrary.Model.RSSFeed>
+
+@{
+    ViewBag.Title = "ListRSSFeeds";
+}
+
+<div>
+    <div id="tree" style="margin-top: 10px; height: 597px;">
+        <ul class="dynatree-container">
+            @foreach (var item in Model)
+            {
+            <li class="">
+                @*<img src="https://plus.google.com/_/favicon?domain=docs.microsoft.com" alt="">*@
+                <img src="@Html.DisplayFor(modelItem => item.IconURL) " alt="">
+                <a href="#" class="dynatree-title">@Html.DisplayFor(modelItem => item.Name) (@Html.DisplayFor(modelItem => item.UnreadPosts))</a>
+            </li>
+            }
+        </ul>
+    </div>
+</div>
