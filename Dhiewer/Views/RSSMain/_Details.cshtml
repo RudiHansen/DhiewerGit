@@ -1,45 +1,5 @@
 ﻿@model IEnumerable<Dhiewer_DataLibrary.Model.RSSPost>
 
-
-    <script>
-    function SetElementDisplay(id)
-    {
-        // Method to change the Elements Display style.
-        var elementId = 'expand' + id;
-        var element = document.getElementById(elementId)
-
-        // If element is not shown, show it.
-        if (element.style.display == 'none')
-        {
-            element.style.display = 'block';
-        }
-        // If element is shown, hide it.
-        else
-        {
-            element.style.display = 'none';
-            // When an element is set to hidden, it also marked in the Database as read.
-            $.ajax(
-            {
-                type: "POST",
-                page: 1,
-                rp: 6,
-                url: '@Url.Action("MarkRead", "RSSMain")' + "?id=" + id,
-                dataType: "json",
-                success: function(result) {},
-                error: function(x, e) {}
-            });
-        }
-        // Look at this might help making the entire page look nicer.
-        // https://getbootstrap.com/
-
-        // BTW here you can see how you do various things with or without jquery:
-        // http://youmightnotneedjquery.com/
-
-    }
-    </script>
-<hr />
-<h2>ListRSSPosts</h2>
-
 @foreach (var item in Model)
 {
     <div id="@Html.DisplayFor(modelItem => item.Id)" class="bordered-gray">
@@ -56,4 +16,3 @@
         </div>
     </div>
 }
-<button type="button" id="clearDetails">Details</button>

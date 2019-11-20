@@ -12,6 +12,11 @@ namespace Dhiewer.Controllers
     public class RSSMainController : Controller
     {
         // GET: RSSMain
+        public ActionResult Test()
+        {
+            return View();
+        }
+        
         public ActionResult Index()
         {
             IRSSFeedRepository repository = new RSSFeedRepository();
